@@ -1,0 +1,22 @@
+herename: Run All Scripts
+on: [push]
+
+jobs:
+  execute-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6.0.2
+
+      - name: Run any .sh file found
+        run: |
+          # هذا الأمر يبحث عن كل الملفات التي تنتهي بـ .sh
+          # ثم يعطيها صلاحية التنفيذ ويشغلها واحد تلو الآخر
+          for script in *.sh; do
+            if [ -f "$script" ]; then
+              echo "جاري تشغيل السكربت: $script"
+              chmod +x "$script"
+              ./"$script"
+              echo "--------------------------"
+            fi
+          done
