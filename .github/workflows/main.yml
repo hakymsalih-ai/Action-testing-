@@ -1,4 +1,4 @@
-herename: Run All Scripts
+name: Run All Scripts
 on: [push]
 
 jobs:
