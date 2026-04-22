@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة الموارد البشرية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- قسم الترحيب -->
+<div class="card" id="welcomeSection">
+  <h1>مرحبًا بك في نظام إدارة الموارد البشرية</h1>
+  <img src="https://images.unsplash.com/photo-1551434678-e076c223a692" alt="واجهة النظام">
+
+  <!-- المشاكل والحلول -->
+  <div class="problems">
+    <h2>المشاكل التي يحلها النظام</h2>
+    <ul>
+      <li>صعوبة تتبع حضور وانصراف الموظفين يدويًا.</li>
+      <li>تأخر تسجيل الإجازات وإدارتها بشكل غير منظم.</li>
+      <li>حساب الرواتب والبدلات بشكل يدوي ومرهق.</li>
+      <li>متابعة أداء الموظفين والتقييم بشكل غير واضح.</li>
+      <li>توزيع المهام ومراقبة الإنتاجية بدون نظام مركزي.</li>
+    </ul>
+  </div>
+  
+  <button onclick="enterSystem()">الدخول إلى النظام</button>
+</div>
+
+<!-- قسم النظام -->
+<div id="systemSection">
+
+  <!-- الموظفين -->
+  <div class="section" id="employeesSection">
+    <h2>الموظفين</h2>
+    <form id="employeeForm">
+      <input type="text" id="name" placeholder="اسم الموظف" required>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <button type="submit">➕ إضافة موظف</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>الاسم</th>
+          <th>البريد</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody id="employeeTable"></tbody>
+    </table>
+  </div>
+
+  <!-- الحضور -->
+  <div class="section" id="attendanceSection">
+    <h2>تتبع الحضور</h2>
+    <form id="attendanceForm">
+      <input type="text" id="employeeName" placeholder="اسم الموظف" required>
+      <input type="date" id="date" required>
+      <select id="status">
+        <option value="حاضر">حاضر</option>
+        <option value="غائب">غائب</option>
+      </select>
+      <button type="submit">➕ إضافة حضور</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>الاسم</th>
+          <th>التاريخ</th>
+          <th>الحالة</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceTable"></tbody>
+    </table>
+  </div>
+
+  <!-- الإجازات -->
+  <div class="section" id="leaveSection">
+    <h2>الإجازات</h2>
+    <form id="leaveForm">
+      <input type="text" id="employeeNameLeave" placeholder="اسم الموظف" required>
+      <input type="date" id="leaveDate" required>
+      <select id="leaveType">
+        <option value="إجازة سنوية">إجازة سنوية</option>
+        <option value="إجازة مرضية">إجازة مرضية</option>
+      </select>
+      <button type="submit">➕ إضافة إجازة</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>الاسم</th>
+          <th>تاريخ الإجازة</th>
+          <th>نوع الإجازة</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody id="leaveTable"></tbody>
+    </table>
+  </div>
+
+  <!-- تقييم الأداء -->
+  <div class="section" id="performanceSection">
+    <h2>تقييم أداء الموظفين</h2>
+    <form id="performanceForm">
+      <input type="text" id="employeeNamePerformance" placeholder="اسم الموظف" required>
+      <select id="performanceRating" required>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="متوسط">متوسط</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+      <button type="submit">➕ إضافة تقييم</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>اسم الموظف</th>
+          <th>التقييم</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody id="performanceTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
