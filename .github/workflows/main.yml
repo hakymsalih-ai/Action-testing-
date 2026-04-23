@@ -7,13 +7,13 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6.0.2
-
+        with:
+            fetch-depth: 2
       - name: Run any .sh file found
         run: |
           # هذا الأمر يبحث عن كل الملفات التي تنتهي بـ .sh
           # ثم يعطيها صلاحية التنفيذ ويشغلها واحد تلو الآخر
-          for script in *.sh; do
-            if [ -f "$script" ]; then
+          for script in $(git diff --name-only HEAD^ HEAD | grep '\.sh'); do
               echo "جاري تشغيل السكربت: $script"
               chmod +x "$script"
               ./"$script"
