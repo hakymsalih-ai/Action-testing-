@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐳 تعلم Docker — الدليل الشامل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #0f1628;
+  --bg3: #141d35;
+  --card: #111827;
+  --card2: #1a2540;
+  --border: #1e3a5f;
+  --accent: #00d4ff;
+  --accent2: #0099cc;
+  --whale: #2496ed;
+  --green: #00ff88;
+  --yellow: #ffd700;
+  --red: #ff4757;
+  --purple: #a855f7;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Tajawal', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--whale); border-radius: 3px; }
+
+/* ═══ HEADER ═══ */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,14,26,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.logo-whale {
+  font-size: 1.8rem;
+  animation: bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+nav {
+  display: flex;
+  gap: 4px;
+}
+
+nav a {
+  color: var(--text2);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+
+nav a:hover {
+  color: var(--accent);
+  background: rgba(0,212,255,0.08);
+}
+
+.nav-active {
+  color: var(--accent) !important;
+  background: rgba(0,212,255,0.1) !important;
+}
+
+/* ═══ HERO ═══ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 2rem 2rem;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(36,150,237,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 80%, rgba(0,212,255,0.08) 0%, transparent 50%);
+}
+
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(30,58,95,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,58,95,0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+}
+
+.hero-content {
+  position: relative;
+  text-align: center;
+  max-width: 860px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(36,150,237,0.12);
+  border: 1px solid rgba(36,150,237,0.3);
+  color: var(--whale);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-family: var(--mono);
+  margin-bottom: 2rem;
+  animation: fadeUp 0.6s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--whale);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+h1.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.hero-title span {
+  background: linear-gradient(135deg, var(--accent), var(--whale), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text2);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--mono);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--whale), var(--accent));
+  color: #000;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(36,150,237,0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ SECTIONS ═══ */
+section {
+  padding: 100px 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+h2.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  color: var(--text2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ═══ CONCEPT CARDS ═══ */
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.concept-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.8rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.concept-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.concept-card:hover::before { transform: scaleX(1); }
+
+.concept-card:hover {
+  border-color: var(--border);
+  transform: translateY(-4px);
+  background: var(--card2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.concept-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.concept-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-family: var(--mono);
+  color: var(--accent);
+}
+
+.concept-desc {
+  color: var(--text2);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ═══ TERMINAL ═══ */
+.terminal {
+  background: #050810;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+}
+
+.terminal-bar {
+  background: #0f1628;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.t-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+
+.t-red { background: #ff5f57; }
+.t-yellow { background: #ffbd2e; }
+.t-green { background: #28c941; }
+
+.t-title {
+  color: var(--text3);
+  font-size: 0.8rem;
+  margin-right: 12px;
+  flex: 1;
+  text-align: center;
+}
+
+.terminal-body {
+  padding: 1.5rem;
+  line-height: 2;
+  min-height: 200px;
+  position: relative;
+}
+
+.t-prompt {
+  color: var(--green);
+}
+
+.t-cmd {
+  color: var(--text);
+}
+
+.t-comment {
+  color: var(--text3);
+}
+
+.t-output {
+  color: var(--text2);
+  padding-right: 1rem;
+}
+
+.t-highlight {
+  color: var(--accent);
+}
+
+.t-error { color: var(--red); }
+.t-success { color: var(--green); }
+.t-warning { color: var(--yellow); }
+
+/* ═══ INTERACTIVE COMMANDS ═══ */
+#commands {
+  background: var(--bg2);
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+#commands > div {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.cmd-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.cmd-tab {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  transition: all 0.2s;
+}
+
+.cmd-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.cmd-tab.active {
+  background: rgba(0,212,255,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.cmd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.cmd-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cmd-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.cmd-item:hover, .cmd-item.selected {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+.cmd-item.selected {
+  border-color: var(--accent);
+  background: rgba(0,212,255,0.05);
+}
+
+.cmd-code {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--green);
+  flex: 1;
+  word-break: break-all;
+}
+
+.cmd-desc {
+  font-size: 0.8rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.cmd-detail {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 80px;
+}
+
+.cmd-detail-title {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cmd-detail-desc {
+  color: var(--text2);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.cmd-detail-example .terminal {
+  font-size: 0.8rem;
+}
+
+/* ═══ DOCKERFILE BUILDER ═══ */
+.dockerfile-builder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.builder-options {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.builder-options h3 {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text3);
+  margin-bottom: 6px;
+  font-family: var(--mono);
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-family: var(--sans);
+  transition: border-color 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  border-color: var(--accent);
+}
+
+.form-group select option {
+  background: var(--bg2);
+}
+
+.generate-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--whale), var(--accent));
+  color: #000;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  font-family: var(--sans);
+}
+
+.generate-btn:hover {
+  box-shadow: 0 8px 30px rgba(36,150,237,0.4);
+  transform: translateY(-1px);
+}
+
+.dockerfile-preview {
+  position: sticky;
+  top: 80px;
+}
+
+/* ═══ QUIZ ═══ */
+.quiz-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.quiz-progress {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.quiz-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--whale), var(--accent));
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.quiz-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-num {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text3);
+  margin-bottom: 1rem;
+}
+
+.quiz-question {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-option {
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  text-align: right;
+  transition: all 0.2s;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.quiz-option:hover {
+  border-color: var(--accent);
+  background: rgba(0,212,255,0.05);
+}
+
+.quiz-option.correct {
+  border-color: var(--green);
+  background: rgba(0,255,136,0.08);
+  color: var(--green);
+}
+
+.quiz-option.wrong {
+  border-color: var(--red);
+  background: rgba(255,71,87,0.08);
+  color: var(--red);
+}
+
+.quiz-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.quiz-feedback {
+  margin-top: 1rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  display: none;
+}
+
+.quiz-feedback.show { display: block; }
+
+.quiz-feedback.correct-fb {
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.3);
+  color: var(--green);
+}
+
+.quiz-feedback.wrong-fb {
+  background: rgba(255,71,87,0.08);
+  border: 1px solid rgba(255,71,87,0.3);
+  color: var(--red);
+}
+
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.quiz-score {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.quiz-next {
+  background: var(--whale);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+  font-family: var(--sans);
+  display: none;
+}
+
+.quiz-next.show { display: block; }
+
+.quiz-next:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* ═══ CHEATSHEET ═══ */
+.cheatsheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+.cheat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cheat-header {
+  padding: 14px 18px;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cheat-header-icon {
+  font-size: 1.2rem;
+}
+
+.cheat-header-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: var(--mono);
+  color: var(--accent);
+}
+
+.cheat-body {
+  padding: 1rem;
+}
+
+.cheat-row {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(30,58,95,0.5);
+  align-items: baseline;
+}
+
+.cheat-row:last-child { border-bottom: none; }
+
+.cheat-cmd {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--green);
+  flex: 1;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.cheat-meaning {
+  font-size: 0.78rem;
+  color: var(--text3);
+  text-align: left;
+  min-width: 100px;
+}
+
+/* ═══ EXERCISES ═══ */
+.exercises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.exercise-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.exercise-header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.exercise-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exercise-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(36,150,237,0.15);
+  border: 1px solid var(--whale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--whale);
+  font-weight: 700;
+}
+
+.exercise-title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.exercise-subtitle {
+  font-size: 0.82rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.difficulty {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.diff-easy { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+.diff-medium { background: rgba(255,215,0,0.1); color: var(--yellow); border: 1px solid rgba(255,215,0,0.3); }
+.diff-hard { background: rgba(255,71,87,0.1); color: var(--red); border: 1px solid rgba(255,71,87,0.3); }
+
+.exercise-body {
+  display: none;
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.exercise-body.open { display: block; }
+
+.exercise-goal {
+  color: var(--text2);
+  font-size: 0.88rem;
+  padding: 1rem 0;
+  line-height: 1.7;
+}
+
+.exercise-steps {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.step-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  background: var(--whale);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-text {
+  font-size: 0.85rem;
+  color: var(--text2);
+}
+
+.step-code {
+  display: block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--green);
+  margin-top: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.step-code:hover {
+  border-color: var(--green);
+  background: rgba(0,255,136,0.05);
+}
+
+/* ═══ COPY BUTTON ═══ */
+.copy-btn {
+  position: absolute;
+  top: 50px;
+  left: 12px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  color: var(--text3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.terminal-wrapper {
+  position: relative;
+}
+
+/* ═══ FOOTER ═══ */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.footer-logo {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-text {
+  color: var(--text3);
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.footer-links a {
+  color: var(--text3);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+/* ═══ PROGRESS TRACKER ═══ */
+.progress-tracker {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.progress-item {
+  text-align: center;
+  padding: 1.2rem;
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.progress-item:hover {
+  border-color: var(--accent);
+}
+
+.progress-item.done {
+  border-color: var(--green);
+  background: rgba(0,255,136,0.05);
+}
+
+.progress-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.progress-label {
+  font-size: 0.8rem;
+  color: var(--text2);
+}
+
+.progress-check {
+  display: none;
+  color: var(--green);
+  font-size: 1.2rem;
+  margin-top: 4px;
+}
+
+.progress-item.done .progress-check { display: block; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  .cmd-grid, .dockerfile-builder { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1.5rem; }
+  nav { display: none; }
+  .hero-btns { flex-direction: column; }
+}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ SEARCH ═══ */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text3); }
+
+/* Animated whale decoration */
+.whale-decoration {
+  position: absolute;
+  bottom: 2rem;
+  right: 4rem;
+  font-size: 8rem;
+  opacity: 0.04;
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--card2);
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* tab content panels */
+.cmd-panel { display: none; }
+.cmd-panel.active { display: flex; flex-direction: column; gap: 4px; }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ تم النسخ!</div>
+
+<!-- HEADER -->
+<header>
+  <a href="#hero" class="logo">
+    <span class="logo-whale">🐳</span>
+    <span>DockerLearn</span>
+  </a>
+  <nav id="main-nav">
+    <a href="#concepts" class="nav-link">المفاهيم</a>
+    <a href="#commands" class="nav-link">الأوامر</a>
+    <a href="#dockerfile" class="nav-link">Dockerfile</a>
+    <a href="#exercises" class="nav-link">التمارين</a>
+    <a href="#quiz" class="nav-link">الاختبار</a>
+    <a href="#cheatsheet" class="nav-link">المرجع</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-bg"></div>
+  <div class="whale-decoration">🐳</div>
+
+  <div class="hero-content">
+    <div class="hero-badge">v2025 — الدليل العربي الشامل</div>
+
+    <h1 class="hero-title">
+      تعلّم <span>Docker</span><br>من الصفر إلى الاحتراف
+    </h1>
+
+    <p class="hero-sub">
+      دليل تفاعلي شامل لتعلم Docker — المفاهيم، الأوامر، Dockerfile،
+      Docker Compose، وتمارين عملية مع اختبار تقييمي
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">فصل تعليمي</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">60+</div>
+        <div class="stat-label">أمر Docker</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">تمارين عملية</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10</div>
+        <div class="stat-label">أسئلة تقييمية</div>
+      </div>
+    </div>
+
+    <div class="hero-btns">
+      <a href="#concepts" class="btn-primary">ابدأ التعلم 🚀</a>
+      <a href="#cheatsheet" class="btn-secondary">المرجع السريع</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 1: CONCEPTS ═══ -->
+<section id="concepts">
+  <div class="section-header reveal">
+    <span class="section-tag">الأساسيات</span>
+    <h2 class="section-title">المفاهيم الأساسية</h2>
+    <p class="section-desc">قبل كتابة أول أمر، تعرّف على اللبنات الأساسية لـ Docker</p>
+  </div>
+
+  <div class="concepts-grid">
+    <div class="concept-card reveal" style="--card-accent: #2496ed;">
+      <div class="concept-icon">📦</div>
+      <div class="concept-name">Container</div>
+      <div class="concept-desc">
+        الحاوية هي بيئة تشغيل معزولة تحتوي على التطبيق وكل ما يحتاجه.
+        خفيفة، سريعة، وتعمل بنفس الطريقة في كل مكان — سواء على جهازك أو السيرفر.
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #00d4ff;">
+      <div class="concept-icon">🖼️</div>
+      <div class="concept-name">Image</div>
+      <div class="concept-desc">
+        الصورة هي قالب للقراءة فقط يُستخدم لإنشاء الحاويات.
+        تحتوي على نظام التشغيل، المكتبات، والتطبيق. مثل ISO القرص القابل للتثبيت.
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #a855f7;">
+      <div class="concept-icon">📄</div>
+      <div class="concept-name">Dockerfile</div>
+      <div class="concept-desc">
+        ملف نصي يحتوي على تعليمات لبناء Image مخصصة.
+        يحدد الصورة الأساسية، الملفات، والأوامر — مثل وصفة لإنشاء صورتك.
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #00ff88;">
+      <div class="concept-icon">🗄️</div>
+      <div class="concept-name">Volume</div>
+      <div class="concept-desc">
+        آلية لحفظ البيانات بشكل دائم خارج الحاوية.
+        بدونه، تُفقد البيانات عند حذف الحاوية. ضروري لقواعد البيانات.
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #ffd700;">
+      <div class="concept-icon">🌐</div>
+      <div class="concept-name">Network</div>
+      <div class="concept-desc">
+        الشبكة تربط الحاويات ببعضها أو بالعالم الخارجي.
+        الحاويات على نفس الشبكة تتواصل باسمها مباشرة.
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #ff4757;">
+      <div class="concept-icon">📋</div>
+      <div class="concept-name">Docker Compose</div>
+      <div class="concept-desc">
+        أداة لتعريف وتشغيل تطبيقات متعددة الحاويات.
+        ملف YAML واحد يصف جميع الخدمات — شغّل كل شيء بأمر واحد.
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #2496ed;">
+      <div class="concept-icon">🏪</div>
+      <div class="concept-name">Registry</div>
+      <div class="concept-desc">
+        مستودع لتخزين ومشاركة الصور. Docker Hub هو المستودع الافتراضي.
+        يمكنك رفع صورك وتنزيل الصور الجاهزة (Nginx, MySQL, Redis...).
+      </div>
+    </div>
+
+    <div class="concept-card reveal" style="--card-accent: #a855f7;">
+      <div class="concept-icon">🏗️</div>
+      <div class="concept-name">Layer</div>
+      <div class="concept-desc">
+        كل تعليمة في Dockerfile تُنشئ طبقة جديدة.
+        Docker يخزن الطبقات ويُعيد استخدامها (cache)
+        لتسريع عمليات البناء وتوفير المساحة.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 2: COMMANDS ═══ -->
+<div id="commands">
+  <div>
+    <div class="section-header reveal">
+      <span class="section-tag">الأوامر</span>
+      <h2 class="section-title">أوامر Docker التفاعلية</h2>
+      <p class="section-desc">اختر تصنيفاً لاستكشاف الأوامر — انقر على أي أمر لرؤية مثال تفصيلي</p>
+    </div>
+
+    <div class="cmd-tabs">
+      <button class="cmd-tab active" onclick="switchTab('containers')">🐳 الحاويات</button>
+      <button class="cmd-tab" onclick="switchTab('images')">🖼️ الصور</button>
+      <button class="cmd-tab" onclick="switchTab('volumes')">💾 التخزين</button>
+      <button class="cmd-tab" onclick="switchTab('networks')">🌐 الشبكات</button>
+      <button class="cmd-tab" onclick="switchTab('compose')">📋 Compose</button>
+      <button class="cmd-tab" onclick="switchTab('system')">⚙️ النظام</button>
+    </div>
+
+    <div class="cmd-grid">
+      <div class="cmd-list" id="cmd-list"></div>
+      <div class="cmd-detail" id="cmd-detail">
+        <div style="color: var(--text3); text-align:center; padding: 3rem 0; font-size: 0.9rem;">
+          👆 اختر أمراً لرؤية التفاصيل والمثال
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 3: DOCKERFILE BUILDER ═══ -->
+<section id="dockerfile">
+  <div class="section-header reveal">
+    <span class="section-tag">البناء</span>
+    <h2 class="section-title">منشئ Dockerfile</h2>
+    <p class="section-desc">خصّص الخيارات وانشئ Dockerfile جاهز للاستخدام</p>
+  </div>
+
+  <div class="dockerfile-builder reveal">
+    <div class="builder-options">
+      <h3>⚙️ إعدادات المشروع</h3>
+
+      <div class="form-group">
+        <label>نوع التطبيق</label>
+        <select id="app-type" onchange="generateDockerfile()">
+          <option value="python">Python (Flask)</option>
+          <option value="node">Node.js (Express)</option>
+          <option value="php">PHP</option>
+          <option value="go">Go</option>
+          <option value="react">React (Build)</option>
+          <option value="static">Static HTML</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>المنفذ (Port)</label>
+        <input type="number" id="app-port" value="5000" min="1" max="65535" onchange="generateDockerfile()">
+      </div>
+
+      <div class="form-group">
+        <label>إعدادات إضافية</label>
+        <select id="extra-opts" onchange="generateDockerfile()">
+          <option value="basic">أساسي</option>
+          <option value="env">مع متغيرات البيئة</option>
+          <option value="healthcheck">مع Health Check</option>
+          <option value="multistage">Multi-stage Build</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>مجلد العمل</label>
+        <input type="text" id="workdir" value="/app" onchange="generateDockerfile()">
+      </div>
+
+      <button class="generate-btn" onclick="copyDockerfile()">📋 نسخ Dockerfile</button>
+    </div>
+
+    <div class="dockerfile-preview">
+      <div class="terminal terminal-wrapper">
+        <div class="terminal-bar">
+          <span class="t-dot t-red"></span>
+          <span class="t-dot t-yellow"></span>
+          <span class="t-dot t-green"></span>
+          <span class="t-title">Dockerfile</span>
+        </div>
+        <div class="terminal-body" id="dockerfile-output" style="min-height:380px; white-space: pre-wrap; font-size: 0.82rem; line-height: 1.8;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 4: EXERCISES ═══ -->
+<section id="exercises" style="background: none;">
+  <div class="section-header reveal">
+    <span class="section-tag">التطبيق</span>
+    <h2 class="section-title">تمارين عملية</h2>
+    <p class="section-desc">تمارين تدريجية من الأساسي إلى المتقدم — انقر لرؤية الخطوات التفصيلية</p>
+  </div>
+
+  <div class="progress-tracker reveal">
+    <h3 style="font-size: 0.95rem; color: var(--text2);">📊 تقدمك في التمارين</h3>
+    <div class="progress-grid" id="progress-grid"></div>
+  </div>
+
+  <div class="exercises-list" id="exercises-list"></div>
+</section>
+
+<!-- ═══ SECTION 5: QUIZ ═══ -->
+<section id="quiz" style="background: var(--bg2); margin: 0; max-width: none; padding: 100px 2rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-header reveal">
+      <span class="section-tag">التقييم</span>
+      <h2 class="section-title">اختبر معلوماتك</h2>
+      <p class="section-desc">10 أسئلة تغطي جميع المحاور — هل أنت مستعد؟</p>
+    </div>
+
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 0%"></div>
+      </div>
+      <div id="quiz-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 6: CHEATSHEET ═══ -->
+<section id="cheatsheet">
+  <div class="section-header reveal">
+    <span class="section-tag">المرجع السريع</span>
+    <h2 class="section-title">Cheat Sheet</h2>
+    <p class="section-desc">جميع الأوامر المهمة في مكان واحد — انقر للنسخ</p>
+  </div>
+
+  <div class="cheatsheet-grid" id="cheatsheet-grid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🐳</div>
+  <p class="footer-text">
+    DockerLearn — دليل Docker الشامل باللغة العربية<br>
+    تعلّم، طبّق، واحترف Docker خطوة بخطوة
+  </p>
+  <div class="footer-links">
+    <a href="https://docs.docker.com" target="_blank">الوثائق الرسمية</a>
+    <a href="https://hub.docker.com" target="_blank">Docker Hub</a>
+    <a href="#hero">العودة للأعلى ↑</a>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+
+const commandsData = {
+  containers: [
+    { cmd: 'docker run -d -p 8080:80 nginx', desc: 'تشغيل Nginx في الخلفية على المنفذ 8080',
+      detail: 'تشغيل حاوية من صورة nginx. -d تعني في الخلفية، -p 8080:80 تحويل المنفذ 8080 من المضيف إلى المنفذ 80 في الحاوية.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker run -d -p 8080:80 --name web nginx</span>
+<span class="t-output">d4e8f2a1b3c9d5e6f7a8b9c0d1e2f3a4b5c6d7e8</span>
+
+<span class="t-prompt">$ </span><span class="t-cmd">docker ps</span>
+<span class="t-highlight">CONTAINER ID   IMAGE   COMMAND   STATUS    PORTS</span>
+<span class="t-output">d4e8f2a1b3c9   nginx   ...       Up 2s     0.0.0.0:8080->80/tcp</span>` },
+
+    { cmd: 'docker ps -a', desc: 'عرض جميع الحاويات (جارية وموقوفة)',
+      detail: 'بدون -a ترى الحاويات الجارية فقط. مع -a ترى جميع الحاويات بما فيها الموقوفة.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker ps -a</span>
+<span class="t-highlight">CONTAINER ID   IMAGE    STATUS          NAMES</span>
+<span class="t-output">d4e8f2a1b3c9   nginx    Up 5 minutes    web</span>
+<span class="t-output">a1b2c3d4e5f6   ubuntu   Exited (0)      test</span>` },
+
+    { cmd: 'docker exec -it CONTAINER bash', desc: 'الدخول إلى حاوية جارية بشكل تفاعلي',
+      detail: 'exec يُشغّل أمراً داخل حاوية جارية. -it لفتح جلسة تفاعلية. bash أو sh حسب الصورة.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker exec -it web bash</span>
+<span class="t-success">root@d4e8f2a1b3c9:/# </span><span class="t-cmd">ls /etc/nginx</span>
+<span class="t-output">conf.d  nginx.conf  mime.types  modules</span>
+<span class="t-success">root@d4e8f2a1b3c9:/# </span><span class="t-cmd">exit</span>` },
+
+    { cmd: 'docker logs -f CONTAINER', desc: 'متابعة سجلات الحاوية مباشرة',
+      detail: '-f تعني follow — تظل السجلات تتحدث تلقائياً. مفيدة لتتبع الأخطاء.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker logs -f web</span>
+<span class="t-output">172.17.0.1 - - [GET /] "200"</span>
+<span class="t-output">172.17.0.1 - - [GET /favicon.ico] "404"</span>
+<span class="t-comment">^C للإيقاف</span>` },
+
+    { cmd: 'docker stop && docker rm CONTAINER', desc: 'إيقاف وحذف الحاوية',
+      detail: 'يجب إيقاف الحاوية قبل حذفها. أو استخدم docker rm -f لحذف جبري.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker stop web</span>
+<span class="t-output">web</span>
+<span class="t-prompt">$ </span><span class="t-cmd">docker rm web</span>
+<span class="t-output">web</span>
+<span class="t-comment"># أو دفعة واحدة:</span>
+<span class="t-prompt">$ </span><span class="t-cmd">docker rm -f web</span>` },
+
+    { cmd: 'docker stats', desc: 'مراقبة استخدام CPU والذاكرة',
+      detail: 'يعرض إحصائيات لجميع الحاويات الجارية بشكل لحظي.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker stats</span>
+<span class="t-highlight">NAME    CPU %   MEM USAGE / LIMIT   NET I/O</span>
+<span class="t-output">web     0.1%    5.2MB / 8GB         1.2kB</span>
+<span class="t-output">db      0.5%    234MB / 8GB         45kB</span>` },
+  ],
+
+  images: [
+    { cmd: 'docker pull python:3.11-slim', desc: 'تنزيل صورة Python خفيفة',
+      detail: 'slim هي نسخة مصغّرة من الصورة. تفضّلها على latest لتوفير المساحة وتسريع النقل.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker pull python:3.11-slim</span>
+<span class="t-output">3.11-slim: Pulling from library/python</span>
+<span class="t-success">Status: Downloaded newer image for python:3.11-slim</span>
+<span class="t-output">Size: 130MB (vs 1GB للصورة الكاملة)</span>` },
+
+    { cmd: 'docker build -t myapp:1.0 .', desc: 'بناء صورة من Dockerfile',
+      detail: '-t لتحديد الاسم والـ tag. النقطة (.) تعني ابحث عن Dockerfile في المجلد الحالي.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker build -t myapp:1.0 .</span>
+<span class="t-output">Step 1/5 : FROM python:3.11-slim</span>
+<span class="t-output">Step 2/5 : WORKDIR /app</span>
+<span class="t-output">Step 3/5 : COPY requirements.txt .</span>
+<span class="t-success">Successfully built a1b2c3d4e5f6</span>
+<span class="t-success">Successfully tagged myapp:1.0</span>` },
+
+    { cmd: 'docker images', desc: 'عرض الصور المحلية مع أحجامها',
+      detail: 'يعرض جميع الصور المخزنة محلياً مع الـ tag والحجم.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker images</span>
+<span class="t-highlight">REPOSITORY   TAG       IMAGE ID       CREATED    SIZE</span>
+<span class="t-output">myapp        1.0       a1b2c3d4e5f6   1 min      156MB</span>
+<span class="t-output">python       3.11-slim b2c3d4e5f6a7   2 days     130MB</span>
+<span class="t-output">nginx        latest    c3d4e5f6a7b8   1 week     187MB</span>` },
+
+    { cmd: 'docker history IMAGE', desc: 'عرض طبقات الصورة وحجم كل طبقة',
+      detail: 'مفيد لفهم كيف بُنيت الصورة وتحديد الطبقات الكبيرة.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker history myapp:1.0</span>
+<span class="t-highlight">IMAGE       CREATED      SIZE    COMMENT</span>
+<span class="t-output">a1b2c3d4    1 min        12B     CMD</span>
+<span class="t-output">b2c3d4e5    1 min        45MB    RUN pip install</span>
+<span class="t-output">c3d4e5f6    2 min        8kB     COPY requirements.txt</span>` },
+  ],
+
+  volumes: [
+    { cmd: 'docker volume create my-data', desc: 'إنشاء Volume مسمّى لحفظ البيانات',
+      detail: 'الـ Named Volume يُدار بواسطة Docker ويُحفظ في مجلد خاص على المضيف.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker volume create my-data</span>
+<span class="t-output">my-data</span>
+<span class="t-prompt">$ </span><span class="t-cmd">docker volume inspect my-data</span>
+<span class="t-output">{</span>
+<span class="t-output">  "Name": "my-data",</span>
+<span class="t-output">  "Mountpoint": "/var/lib/docker/volumes/my-data/_data"</span>
+<span class="t-output">}</span>` },
+
+    { cmd: 'docker run -v my-data:/var/lib/mysql mysql', desc: 'تشغيل MySQL مع volume دائم',
+      detail: 'البيانات تُحفظ في Volume حتى لو حذفت الحاوية وأعدت إنشاؤها.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker run -d \\</span>
+<span class="t-cmd">  --name mysql-db \\</span>
+<span class="t-cmd">  -e MYSQL_ROOT_PASSWORD=secret \\</span>
+<span class="t-cmd">  -v my-data:/var/lib/mysql \\</span>
+<span class="t-cmd">  mysql:8</span>
+<span class="t-success">✓ البيانات محفوظة حتى بعد حذف الحاوية</span>` },
+
+    { cmd: 'docker run -v $(pwd):/app IMAGE', desc: 'Bind Mount — ربط مجلد محلي',
+      detail: 'يُتيح لك تعديل الكود مباشرة والحاوية ترى التغييرات فوراً. مفيد للتطوير.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker run -d \\</span>
+<span class="t-cmd">  -v $(pwd)/src:/app/src \\</span>
+<span class="t-cmd">  -p 3000:3000 \\</span>
+<span class="t-cmd">  my-node-app</span>
+<span class="t-comment"># الآن كل تعديل في src/ يظهر فوراً في الحاوية</span>` },
+  ],
+
+  networks: [
+    { cmd: 'docker network create app-net', desc: 'إنشاء شبكة مخصصة للحاويات',
+      detail: 'الشبكة المخصصة تسمح للحاويات بالتواصل باسمها بدلاً من عنوان IP.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker network create app-net</span>
+<span class="t-output">a1b2c3d4e5f6...</span>
+<span class="t-prompt">$ </span><span class="t-cmd">docker run -d --name web --network app-net nginx</span>
+<span class="t-prompt">$ </span><span class="t-cmd">docker run -d --name db  --network app-net mysql:8</span>
+<span class="t-comment"># web تتواصل مع db عبر اسم "db"</span>` },
+
+    { cmd: 'docker network ls', desc: 'عرض جميع الشبكات',
+      detail: 'Docker يأتي مع 3 شبكات افتراضية: bridge, host, none.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker network ls</span>
+<span class="t-highlight">NETWORK ID   NAME      DRIVER  SCOPE</span>
+<span class="t-output">a1b2c3d4     bridge    bridge  local</span>
+<span class="t-output">b2c3d4e5     host      host    local</span>
+<span class="t-output">c3d4e5f6     none      null    local</span>
+<span class="t-output">d4e5f6a7     app-net   bridge  local</span>` },
+  ],
+
+  compose: [
+    { cmd: 'docker compose up -d', desc: 'تشغيل جميع الخدمات في الخلفية',
+      detail: 'يقرأ docker-compose.yml وينشئ ويشغّل جميع الخدمات المعرّفة.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker compose up -d</span>
+<span class="t-output">Creating network "app_default" with driver "bridge"</span>
+<span class="t-output">Creating volume "app_db-data"</span>
+<span class="t-success">✓ Creating app_db_1  ... done</span>
+<span class="t-success">✓ Creating app_web_1 ... done</span>` },
+
+    { cmd: 'docker compose down -v', desc: 'إيقاف الخدمات وحذف الـ Volumes',
+      detail: 'بدون -v يُبقي على الـ Volumes. مع -v يحذفها أيضاً.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker compose down -v</span>
+<span class="t-output">Stopping app_web_1 ... done</span>
+<span class="t-output">Stopping app_db_1  ... done</span>
+<span class="t-output">Removing app_web_1 ... done</span>
+<span class="t-output">Removing app_db_1  ... done</span>
+<span class="t-output">Removing volume app_db-data</span>` },
+
+    { cmd: 'docker compose logs -f web', desc: 'متابعة سجلات خدمة محددة',
+      detail: 'يعرض السجلات مع ألوان مميزة لكل خدمة.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker compose logs -f web</span>
+<span class="t-highlight">web_1 |</span> <span class="t-output"> * Running on http://0.0.0.0:5000</span>
+<span class="t-highlight">web_1 |</span> <span class="t-output"> * Serving Flask app 'app'</span>` },
+
+    { cmd: 'docker compose exec web bash', desc: 'الدخول إلى خدمة بالاسم',
+      detail: 'مثل docker exec لكن تستخدم اسم الخدمة من docker-compose.yml.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker compose exec web bash</span>
+<span class="t-success">root@a1b2c3:/app# </span><span class="t-cmd">python manage.py shell</span>` },
+  ],
+
+  system: [
+    { cmd: 'docker system df', desc: 'عرض استخدام المساحة',
+      detail: 'يعرض تفصيل استخدام المساحة للصور والحاويات والـ Volumes.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker system df</span>
+<span class="t-highlight">TYPE            TOTAL   ACTIVE   SIZE      RECLAIMABLE</span>
+<span class="t-output">Images          5       2        1.23GB    800MB (65%)</span>
+<span class="t-output">Containers      3       1        45kB      40kB (90%)</span>
+<span class="t-output">Volumes         2       1        234MB     0B (0%)</span>` },
+
+    { cmd: 'docker system prune -a', desc: 'تنظيف شامل — احذر!',
+      detail: 'يحذف الحاويات الموقوفة، الصور غير المستخدمة، الشبكات والـ build cache.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker system prune -a</span>
+<span class="t-warning">WARNING! This will remove:</span>
+<span class="t-output">  - all stopped containers</span>
+<span class="t-output">  - all images without a container</span>
+<span class="t-output">Are you sure? [y/N] y</span>
+<span class="t-success">Total reclaimed space: 2.3GB</span>` },
+
+    { cmd: 'docker inspect CONTAINER', desc: 'معلومات تفصيلية بصيغة JSON',
+      detail: 'يعرض كل شيء عن الحاوية: الشبكات، الـ Volumes، متغيرات البيئة، إلخ.',
+      example: `<span class="t-prompt">$ </span><span class="t-cmd">docker inspect web --format '{{.State.Status}}'</span>
+<span class="t-output">running</span>
+<span class="t-prompt">$ </span><span class="t-cmd">docker inspect web --format '{{.NetworkSettings.IPAddress}}'</span>
+<span class="t-output">172.17.0.2</span>` },
+  ],
+};
+
+const exercises = [
+  {
+    title: 'خادم Nginx مخصص',
+    subtitle: 'صفحتك الأولى داخل Docker',
+    difficulty: 'easy',
+    goal: 'تشغيل خادم Nginx وعرض صفحة HTML مخصصة باستخدام Bind Mount.',
+    steps: [
+      { text: 'أنشئ ملف HTML مخصص', code: 'echo "<h1>مرحباً من Docker! 🐳</h1>" > index.html' },
+      { text: 'شغّل Nginx مع ربط الملف', code: 'docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html --name my-web nginx' },
+      { text: 'افتح المتصفح وتحقق', code: 'curl http://localhost:8080' },
+      { text: 'نظّف الحاوية', code: 'docker stop my-web && docker rm my-web' },
+    ]
+  },
+  {
+    title: 'بناء صورة Python مخصصة',
+    subtitle: 'Dockerfile أول لك',
+    difficulty: 'easy',
+    goal: 'إنشاء Dockerfile لتطبيق Python بسيط، بناء الصورة، وتشغيلها.',
+    steps: [
+      { text: 'أنشئ app.py', code: 'echo "print(\"Hello from Docker! 🐳\")" > app.py' },
+      { text: 'أنشئ Dockerfile', code: 'printf "FROM python:3.11-slim\\nWORKDIR /app\\nCOPY app.py .\\nCMD [\'python\', \'app.py\']" > Dockerfile' },
+      { text: 'ابنِ الصورة', code: 'docker build -t my-python-app .' },
+      { text: 'شغّل وتحقق', code: 'docker run --rm my-python-app' },
+    ]
+  },
+  {
+    title: 'قاعدة بيانات MySQL دائمة',
+    subtitle: 'Volumes في العمل',
+    difficulty: 'medium',
+    goal: 'تشغيل MySQL مع Volume لضمان حفظ البيانات حتى بعد حذف الحاوية.',
+    steps: [
+      { text: 'أنشئ Volume', code: 'docker volume create mysql-data' },
+      { text: 'شغّل MySQL مع Volume', code: 'docker run -d --name mysql-db -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=testdb -v mysql-data:/var/lib/mysql -p 3306:3306 mysql:8' },
+      { text: 'ادخل وأنشئ جدول', code: 'docker exec -it mysql-db mysql -uroot -psecret testdb -e "CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(50));"' },
+      { text: 'أعد إنشاء الحاوية وتحقق من البقاء', code: 'docker stop mysql-db && docker rm mysql-db && docker run -d --name mysql-db -e MYSQL_ROOT_PASSWORD=secret -v mysql-data:/var/lib/mysql mysql:8' },
+    ]
+  },
+  {
+    title: 'Flask + Redis (Compose)',
+    subtitle: 'تطبيق متعدد الحاويات',
+    difficulty: 'medium',
+    goal: 'استخدام Docker Compose لتشغيل تطبيق Flask مع Redis لحساب عدد الزيارات.',
+    steps: [
+      { text: 'أنشئ docker-compose.yml مع Flask و Redis', code: 'mkdir flask-redis && cd flask-redis' },
+      { text: 'أنشئ ملفات المشروع (app.py, requirements.txt, Dockerfile)', code: 'touch app.py requirements.txt Dockerfile docker-compose.yml' },
+      { text: 'شغّل التطبيق', code: 'docker compose up -d' },
+      { text: 'اختبر وراقب', code: 'curl http://localhost:5000 && docker compose logs -f' },
+      { text: 'أوقف وانظّف', code: 'docker compose down -v' },
+    ]
+  },
+  {
+    title: 'WordPress كامل',
+    subtitle: 'Stack إنتاجي',
+    difficulty: 'hard',
+    goal: 'نشر موقع WordPress كامل مع MySQL باستخدام Docker Compose وحفظ جميع البيانات.',
+    steps: [
+      { text: 'أنشئ docker-compose.yml لـ WordPress + MySQL', code: 'mkdir my-wordpress && cd my-wordpress && touch docker-compose.yml' },
+      { text: 'أضف خدمة MySQL مع Volume', code: 'docker compose up db -d' },
+      { text: 'أضف خدمة WordPress', code: 'docker compose up wordpress -d' },
+      { text: 'أضف phpMyAdmin للإدارة', code: 'docker compose up phpmyadmin -d' },
+      { text: 'افتح المتصفح وأكمل الإعداد', code: 'open http://localhost:8080' },
+    ]
+  },
+];
+
+const quizData = [
+  { q: 'ما الفرق بين Image و Container في Docker؟', opts: ['Image جارية، Container موقوفة', 'Image قالب للقراءة فقط، Container نسخة تشغيل منها', 'Image أكبر حجماً دائماً', 'لا فرق بينهما'], ans: 1, exp: 'Image هي القالب الثابت، والContainer هي نسخة حية قابلة للتشغيل منها.' },
+  { q: 'ما الأمر الصحيح لتشغيل حاوية في الخلفية؟', opts: ['docker run -b nginx', 'docker run --back nginx', 'docker run -d nginx', 'docker start nginx'], ans: 2, exp: '-d تعني detached mode أي في الخلفية.' },
+  { q: 'ما وظيفة WORKDIR في Dockerfile؟', opts: ['تحديد المستخدم', 'تحديد مجلد العمل داخل الحاوية', 'تشغيل أمر', 'فتح منفذ'], ans: 1, exp: 'WORKDIR تحدد المجلد الذي ستُنفَّذ فيه الأوامر التالية داخل الحاوية.' },
+  { q: 'كيف تنسخ ملفاً من المضيف إلى الحاوية وهي جارية؟', opts: ['docker mv', 'docker transfer', 'docker cp file container:/path', 'docker send'], ans: 2, exp: 'docker cp يستخدم لنسخ الملفات من وإلى الحاويات الجارية.' },
+  { q: 'ما الفرق بين CMD و ENTRYPOINT في Dockerfile؟', opts: ['لا فرق', 'CMD يمكن تجاوزه بسهولة عند التشغيل، ENTRYPOINT أصعب', 'ENTRYPOINT للتطوير فقط', 'CMD أسرع'], ans: 1, exp: 'CMD يُستبدل بأي أمر يُمرر عند docker run، بينما ENTRYPOINT يبقى ثابتاً.' },
+  { q: 'ما الأمر لعرض سجلات حاوية باسم "web" بشكل مباشر؟', opts: ['docker logs web', 'docker watch web', 'docker logs -f web', 'docker stream web'], ans: 2, exp: '-f تعني follow — تتابع السجلات وهي تُنتج في الوقت الفعلي.' },
+  { q: 'لماذا نستخدم .dockerignore؟', opts: ['لتسريع الحاوية', 'لتجنب نسخ ملفات غير ضرورية عند البناء', 'لتشفير الملفات', 'لضغط الصورة'], ans: 1, exp: '.dockerignore يمنع نسخ ملفات مثل node_modules و .git عند docker build.' },
+  { q: 'ما الأمر لتنظيف شامل للنظام؟', opts: ['docker clean all', 'docker remove everything', 'docker system prune -a', 'docker flush'], ans: 2, exp: 'docker system prune -a يحذف جميع الحاويات الموقوفة والصور غير المستخدمة والـ cache.' },
+  { q: 'في Docker Compose، ما وظيفة depends_on؟', opts: ['تحديد متغيرات البيئة', 'تحديد ترتيب بدء الخدمات', 'تحديد المنافذ', 'تحديد الـ Volume'], ans: 1, exp: 'depends_on تضمن تشغيل الخدمات التي يعتمد عليها التطبيق أولاً (لكن لا تضمن جاهزيتها).' },
+  { q: 'ما فائدة Multi-stage Build؟', opts: ['تسريع التشغيل فقط', 'تقليل حجم الصورة النهائية بفصل بيئة البناء عن بيئة التشغيل', 'تحسين الأمان فقط', 'لا فائدة عملية'], ans: 1, exp: 'في Multi-stage، تبني في صورة كاملة ثم تنسخ الناتج فقط إلى صورة صغيرة نظيفة.' },
+];
+
+const cheatsheetData = [
+  {
+    title: 'الحاويات',
+    icon: '🐳',
+    rows: [
+      { cmd: 'docker run -d -p 8080:80 nginx', meaning: 'تشغيل في الخلفية' },
+      { cmd: 'docker run -it ubuntu bash', meaning: 'تفاعلي' },
+      { cmd: 'docker run --rm IMAGE', meaning: 'حذف بعد الانتهاء' },
+      { cmd: 'docker ps', meaning: 'الجارية' },
+      { cmd: 'docker ps -a', meaning: 'الكل' },
+      { cmd: 'docker stop NAME', meaning: 'إيقاف' },
+      { cmd: 'docker rm -f NAME', meaning: 'حذف جبري' },
+      { cmd: 'docker exec -it NAME bash', meaning: 'دخول' },
+      { cmd: 'docker logs -f NAME', meaning: 'سجلات حية' },
+      { cmd: 'docker stats', meaning: 'أداء لحظي' },
+      { cmd: 'docker inspect NAME', meaning: 'تفاصيل JSON' },
+    ]
+  },
+  {
+   
