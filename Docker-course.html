@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تعلّم Docker - دورة تفاعلية</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #e2e8f0; transition: all 0.3s; }
+    body.light { background: #f1f5f9; color: #1e293b; }
+    .container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: #1e293b; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; border-left: 1px solid #334155; }
+    body.light .sidebar { background: #e2e8f0; border-color: #cbd5e1; }
+    .sidebar h2 { font-size: 1.5rem; color: #38bdf8; }
+    .sidebar nav { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sidebar button { background: transparent; border: none; color: #cbd5e1; text-align: right; padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+    body.light .sidebar button { color: #334155; }
+    .sidebar button:hover, .sidebar button.active { background: #334155; color: #38bdf8; }
+    body.light .sidebar button:hover, body.light .sidebar button.active { background: #cbd5e1; }
+    .theme-toggle { margin-top: auto; }
+    .main { flex:1; padding: 2rem; overflow-y: auto; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .card { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #334155; }
+    body.light .card { background: #ffffff; border-color: #e2e8f0; }
+    h3 { margin-bottom: 1rem; color: #38bdf8; }
+    pre { background: #0f172a; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; direction: ltr; text-align: left; }
+    body.light pre { background: #f1f5f9; }
+    code { font-family: 'Cascadia Code', monospace; }
+    .terminal-container { background: #000; border-radius: 12px; padding: 1rem; margin: 1rem 0; }
+    .terminal-output { min-height: 200px; max-height: 400px; overflow-y: auto; color: #00ff41; font-family: monospace; white-space: pre-wrap; margin-bottom: 0.5rem; }
+    .terminal-input-line { display: flex; gap: 0.5rem; align-items: center; }
+    .terminal-input-line span { color: #00ff41; font-family: monospace; }
+    #terminalInput { flex:1; background: transparent; border: none; color: #00ff41; font-family: monospace; font-size: 1rem; outline: none; }
+    .btn { background: #38bdf8; color: #0f172a; border: none; padding: 0.7rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.3rem; }
+    .btn:hover { opacity: 0.9; }
+    .quiz-option { display: block; margin: 0.5rem 0; }
+    .exercise-toggle { background: #334155; border: none; color: #e2e8f0; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+    .solution { display: none; margin-top: 0.5rem; }
+    .solution.show { display: block; }
+    @media (max-width: 700px) { .container { flex-direction: column; } .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>🐳 DockerHub</h2>
+      <nav>
+        <button class="nav-btn active" data-section="intro">📘 المقدمة</button>
+        <button class="nav-btn" data-section="commands">💻 الأوامر</button>
+        <button class="nav-btn" data-section="terminal">⚡ الطرفية التفاعلية</button>
+        <button class="nav-btn" data-section="exercises">🧪 تمارين</button>
+        <button class="nav-btn" data-section="quiz">❓ مسابقة</button>
+      </nav>
+      <button id="themeToggle" class="btn theme-toggle">☀️ وضع نهاري</button>
+    </aside>
+    <main class="main">
+      <!-- المقدمة -->
+      <div id="intro" class="section active">
+        <div class="card">
+          <h3>مرحباً بك في دورة Docker التفاعلية</h3>
+          <p>Docker أداة لتشغيل التطبيقات داخل حاويات خفيفة ومعزولة. في هذه الدورة ستتعلم الأساسيات مع أمثلة عملية ومحاكي أوامر.</p>
+        </div>
+        <div class="card">
+          <h3>لماذا Docker؟</h3>
+          <ul>
+            <li>🐞 بيئة متطابقة في كل مكان (جهازك، السيرفر، السحابة).</li>
+            <li>⚡ تشغيل وإيقاف التطبيقات بسرعة.</li>
+            <li>📦 عزل الاعتماديات دون تعارض.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- الأوامر الأساسية -->
+      <div id="commands" class="section">
+        <div class="card">
+          <h3>أوامر Docker الأساسية</h3>
+          <pre><code># تشغيل حاوية ngnix
+docker run -d -p 8080:80 --name myweb nginx:alpine
+
+# عرض الحاويات النشطة
+docker ps
+
+# إيقاف الحاوية
+docker stop myweb
+
+# حذف الحاوية
+docker rm myweb
+
+# بناء صورة
+docker build -t myapp:1.0 .</code></pre>
+        </div>
+      </div>
+      <!-- الطرفية التفاعلية -->
+      <div id="terminal" class="section">
+        <div class="card">
+          <h3>⚡ محاكي أوامر Docker</h3>
+          <p>جرّب كتابة أوامر مثل <code>docker run hello-world</code> أو <code>docker ps</code></p>
+          <div class="terminal-container">
+            <div id="terminalOutput" class="terminal-output">أهلاً بك في محاكي Docker الطرفي 🐳
+اكتب `help` لعرض الأوامر المتاحة</div>
+            <div class="terminal-input-line">
+              <span>$ </span>
+              <input type="text" id="terminalInput" placeholder="docker run nginx..." autofocus>
+            </div>
+          </div>
+          <button class="btn" onclick="clearTerminal()">مسح الطرفية</button>
+        </div>
+      </div>
+      <!-- تمارين -->
+      <div id="exercises" class="section">
+        <div class="card">
+          <h3>تمرين 1: كتابة Dockerfile</h3>
+          <p>اكتب Dockerfile لتطبيق Python بسيط يستمع على port 5000.</p>
+          <button class="exercise-toggle" onclick="document.getElementById('sol1').classList.toggle('show')">عرض الحل</button>
+          <div id="sol1" class="solution">
+            <pre><code>FROM python:3.10-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD ["python", "app.py"]</code></pre>
+          </div>
+        </div>
+        <div class="card">
+          <h3>تمرين 2: docker-compose</h3>
+          <p>ارفع تطبيق ويب مع قاعدة بيانات Postgres باستخدام compose.</p>
+          <button class="exercise-toggle" onclick="document.getElementById('sol2').classList.toggle('show')">عرض الحل</button>
+          <div id="sol2" class="solution">
+            <pre><code>version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: secret</code></pre>
+          </div>
+        </div>
+      </div>
+      <!-- مسابقة -->
+      <div id="quiz" class="section">
+        <div class="card">
+          <h3>اختبر معلوماتك</h3>
+          <div id="quizQuestion"></div>
+          <div id="quizOptions"></div>
+          <button class="btn" onclick="nextQuiz()">السؤال التالي</button>
+          <p id="quizResult"></p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    // التنقل بين الأقسام
+    const btns = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.section');
+    btns.forEach(b => b.addEventListener('click', () => {
+      btns.forEach(btn => btn.classList.remove('active'));
+      b.classList.add('active');
+      sections.forEach(s => s.classList.remove('active'));
+      document.getElementById(b.dataset.section).classList.add('active');
+    }));
+
+    // الوضع الليلي/النهاري
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      themeToggle.textContent = document.body.classList.contains('light') ? '🌙 وضع ليلي' : '☀️ وضع نهاري';
+    });
+
+    // محاكي الطرفية
+    const termOutput = document.getElementById('terminalOutput');
+    const termInput = document.getElementById('terminalInput');
+    const simulatedCommands = {
+      'help': 'الأوامر المتاحة: docker run, docker ps, docker pull, docker stop, docker rm, docker build, clear',
+      'docker run hello-world': 'Hello from Docker!\nThis message shows that your installation appears to be working correctly.',
+      'docker run nginx': 'تم تشغيل nginx (افتراضي port 80) -- استخدم -d لتشغيله في الخلفية.',
+      'docker ps': 'CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\na1b2c3d4e5f6   nginx     ...       ...       Up ...    80/tcp    myweb',
+      'docker pull alpine': 'Using default tag: latest\nlatest: Pulling from library/alpine\nDigest: sha256:...\nStatus: Image is up to date for alpine:latest',
+      'docker stop myweb': 'myweb',
+      'docker rm myweb': 'myweb',
+      'clear': '__CLEAR__',
+    };
+
+    function appendOutput(text) {
+      termOutput.textContent += '\n' + text;
+      termOutput.scrollTop = termOutput.scrollHeight;
+    }
+
+    termInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = termInput.value.trim();
+        termInput.value = '';
+        if (cmd === '') return;
+        appendOutput('$ ' + cmd);
+        if (simulatedCommands[cmd]) {
+          if (simulatedCommands[cmd] === '__CLEAR__') {
+            termOutput.textContent = '$ ' + cmd;
+          } else {
+            appendOutput(simulatedCommands[cmd]);
+          }
+        } else {
+          appendOutput('bash: ' + cmd + ': أمر غير معروف. اكتب help للمساعدة.');
+        }
+      }
+    });
+
+    function clearTerminal() {
+      termOutput.textContent = 'تم مسح الطرفية. اكتب أمراً...';
+    }
+
+    // نظام المسابقة
+    const quizData = [
+      { q: 'ما الأمر لإنشاء حاوية جديدة وتشغيلها؟', opts: ['docker start', 'docker run', 'docker create', 'docker begin'], ans: 1 },
+      { q: 'ما الفرق بين الصورة والحاوية؟', opts: ['لا فرق', 'الصورة قالب، والحاوية نسخة مشغلة', 'الصورة أكبر', 'الحاوية تقرأ فقط'], ans: 1 },
+      { q: 'لأي منفذ يستمع Nginx افتراضياً داخل الحاوية؟', opts: ['8080', '3000', '80', '443'], ans: 2 },
+    ];
+    let quizIndex = 0;
+    function showQuiz() {
+      const q = quizData[quizIndex];
+      document.getElementById('quizQuestion').innerHTML = `<p><strong>${quizIndex+1}. ${q.q}</strong></p>`;
+      let optsHtml = '';
+      q.opts.forEach((opt, idx) => {
+        optsHtml += `<label class="quiz-option"><input type="radio" name="quizOpt" value="${idx}"> ${opt}</label><br>`;
+      });
+      document.getElementById('quizOptions').innerHTML = optsHtml;
+      document.getElementById('quizResult').textContent = '';
+    }
+    function nextQuiz() {
+      const selected = document.querySelector('input[name="quizOpt"]:checked');
+      if (!selected) {
+        document.getElementById('quizResult').textContent = 'الرجاء اختيار إجابة.';
+        return;
+      }
+      if (parseInt(selected.value) === quizData[quizIndex].ans) {
+        document.getElementById('quizResult').textContent = '✅ إجابة صحيحة!';
+      } else {
+        document.getElementById('quizResult').textContent = '❌ إجابة خاطئة. حاول مرة أخرى أو انتقل للسؤال التالي.';
+      }
+      quizIndex = (quizIndex + 1) % quizData.length;
+      setTimeout(showQuiz, 1500);
+    }
+    showQuiz();
+  </script>
+</body>
+</html>
